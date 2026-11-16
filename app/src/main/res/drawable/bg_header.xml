@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cabeçalho verde com os cantos de baixo arredondados -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/walkon_green" />
+    <corners
+        android:bottomLeftRadius="28dp"
+        android:bottomRightRadius="28dp" />
+</shape>

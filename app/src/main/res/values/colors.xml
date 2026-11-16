@@ -2,9 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="walkon_green">#2E7D32</color>
-    <color name="walkon_green_dark">#1B5E20</color>
-    <color name="walkon_green_light">#A5D6A7</color>
-    <color name="walkon_background">#F4F9F4</color>
 
+    <!-- Tema escuro -->
+    <color name="bg_dark">#0E1411</color>
+    <color name="card_dark">#18211C</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#8A9A90</color>
+    <color name="accent_light">#7EE2A8</color>
+
+    <!-- Cores do Palmeiras -->
+    <color name="walkon_green">#006437</color>
+    <color name="walkon_red">#7A0F1C</color>
+
+    <!-- Cores de cada direção: a forte (fundo) e a clara (destaques) -->
+    <color name="dir_norte">#006437</color>
+    <color name="dir_norte_light">#7EE2A8</color>
+    <color name="dir_leste">#1F3A93</color>
+    <color name="dir_leste_light">#8DB4FF</color>
+    <color name="dir_sul">#7A0F1C</color>
+    <color name="dir_sul_light">#FF8A80</color>
+    <color name="dir_oeste">#8A6D1F</color>
+    <color name="dir_oeste_light">#F5D06F</color>
 </resources>

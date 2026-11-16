@@ -1,19 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- A tela inteira rola -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/bg_dark"
+    android:clipToPadding="false">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- ===== Topo: fundo verde atrás do título e de parte do mapa ===== -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Fundo verde: vai do topo até 230dp antes do fim do mapa -->
+            <View
+                android:id="@+id/headerBg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="230dp"
+                android:background="@drawable/bg_header" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingStart="22dp"
+                android:paddingTop="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvGreeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bora caminhar?"
+                        android:textColor="#B9DCC6"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="WalkOn"
+                        android:textColor="@color/white"
+                        android:textSize="36sp" />
+
+                    <!-- Status do GPS -->
+                    <TextView
+                        android:id="@+id/tvGps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📡 Procurando GPS..."
+                        android:textColor="#DDFFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Bússola: muda de texto e cor conforme a direção do celular -->
+                <TextView
+                    android:id="@+id/tvDirection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="8dp"
+                    android:text="Norte"
+                    android:textColor="@color/accent_light"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginHorizontal="16dp"
+                    app:cardBackgroundColor="@color/card_dark"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="6dp"
+                    app:strokeColor="#2C3B32"
+                    app:strokeWidth="1dp">
+
+                    <org.maplibre.android.maps.MapView
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:maplibre_renderTextureMode="true" />
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Resto da tela, com margem nas laterais -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="24dp">
+
+        <!-- ===== Passos em destaque ===== -->
+        <TextView
+            android:id="@+id/tvSteps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18dp"
+            android:fontFamily="sans-serif-black"
+            android:text="0"
+            android:textColor="@color/accent_light"
+            android:textSize="64sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-6dp"
+            android:text="passos"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <!-- ===== Distância e tempo ===== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_card"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="14dp">
+
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="0 m"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="distância"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_card"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingVertical="14dp">
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="tempo"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ===== Botão ===== -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStartStop"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="▶  Iniciar caminhada"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:cornerRadius="30dp" />
+
+        <!-- ===== Histórico ===== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-black"
+                android:text="Histórico"
+                android:textColor="@color/text_primary"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="segure para apagar"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Os itens do histórico são colocados aqui pelo código -->
+        <LinearLayout
+            android:id="@+id/historyContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
