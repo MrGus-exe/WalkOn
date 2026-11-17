@@ -86,12 +86,11 @@ class StepSensor(context: Context, private val onStep: () -> Unit) : SensorEvent
                 val magnitude = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
 
                 // Gravidade padrão na Terra ~ 9.8 m/s²
-                // Durante a passada, a aceleração sobe acima de ~11.8 m/s² e cai abaixo de 10.0 m/s².
-                // Intervalo mínimo de 280ms entre passos para evitar falsos positivos de vibração.
+                // Ajustado para 18.0f e 300ms (ajuste intermediário entre 13 e 15).
                 val nowNs = event.timestamp
-                val minIntervalNs = 280_000_000L
+                val minIntervalNs = 300_000_000L // 300ms
 
-                if (magnitude > 11.8f && !isAccelerating && (nowNs - lastStepTimeNs > minIntervalNs)) {
+                if (magnitude > 18.0f && !isAccelerating && (nowNs - lastStepTimeNs > minIntervalNs)) {
                     isAccelerating = true
                     lastStepTimeNs = nowNs
                     onStep()
