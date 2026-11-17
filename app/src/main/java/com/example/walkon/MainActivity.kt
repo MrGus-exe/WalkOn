@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnStartStop.setOnClickListener {
             when {
                 viewModel.state.value.isTracking -> stopWalk()
-                hasPreciseLocation() -> startWalk()
+                hasPreciseLocation() && hasActivityRecognition() -> startWalk()
                 else -> { startAfterPermission = true; askPermissions() }
             }
         }
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Sem internet: o mapa não vai carregar", Toast.LENGTH_LONG).show()
         }
         if (hasLocationPermission()) startGps()
-        if (!hasPreciseLocation()) askPermissions() // sem permissão ou só aproximada: pede de novo
+        if (!hasPreciseLocation() || !hasActivityRecognition()) askPermissions() // sem permissão completa: pede
 
         // Deixa arrastar o mapa sem a tela rolar junto.
         binding.mapView.setOnTouchListener { v, _ ->
@@ -175,6 +175,15 @@ class MainActivity : AppCompatActivity() {
     private fun hasPreciseLocation() =
         ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED
+
+    // Permissão para sensores de passos no Android 10+
+    private fun hasActivityRecognition() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) ==
+                PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
 
     private fun hasInternet(): Boolean {
         val cm = getSystemService(ConnectivityManager::class.java)
@@ -383,7 +392,12 @@ class MainActivity : AppCompatActivity() {
 
     // O MapView precisa receber os eventos do ciclo de vida.
     override fun onStart() { super.onStart(); binding.mapView.onStart() }
-    override fun onResume() { super.onResume(); binding.mapView.onResume(); compassSensor.start() }
+    override fun onResume() {
+        super.onResume()
+        binding.mapView.onResume()
+        compassSensor.start()
+        if (viewModel.state.value.isTracking) stepSensor.start()
+    }
     override fun onPause() { super.onPause(); binding.mapView.onPause(); compassSensor.stop() }
     override fun onStop() { super.onStop(); binding.mapView.onStop() }
     override fun onLowMemory() { super.onLowMemory(); binding.mapView.onLowMemory() }
